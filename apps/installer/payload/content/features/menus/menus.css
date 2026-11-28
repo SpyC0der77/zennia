@@ -145,6 +145,128 @@
     corner-shape: round !important;
   }
 
+  /* Folder tabs popup (hovering a collapsed folder): same card, search field
+     and rows as the other menus instead of Zen's tall, unstyled list. */
+  :root[data-zennia] #zen-folder-tabs-popup {
+    appearance: none !important;
+    width: 280px !important;
+    background: var(--zennia-menu-surface) !important;
+    border: 1px solid var(--zennia-menu-border) !important;
+    border-radius: var(--zennia-menu-radius) !important;
+    corner-shape: round !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    --panel-padding: 0 !important;
+    color: var(--zennia-text) !important;
+    transform-origin: left center;
+
+    /* The card replaces the native Mica popup, which Windows animated, and Zen
+       zeroes panel transitions while Mica is on; a keyframe animation still runs.
+       It grows out of the folder, so it starts at the edge nearest the sidebar. */
+    &[animate="open"] {
+      animation: zennia-folder-popup-in 180ms cubic-bezier(0.2, 0.7, 0.3, 1) both;
+    }
+    :root[zen-right-side="true"] & {
+      transform-origin: right center;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      &[animate="open"] {
+        animation-name: zennia-folder-popup-fade;
+      }
+    }
+
+    & .tabs-list-header {
+      align-items: center !important;
+      /* Zen marks the header flex="1", which squeezes it in the vertical panel. */
+      flex: none !important;
+      height: 32px !important;
+      min-height: 32px !important;
+      margin: 6px 6px 4px !important;
+      padding: 0 10px !important;
+      gap: 8px;
+      border: 0 !important;
+      border-radius: var(--zennia-menu-item-radius) !important;
+      corner-shape: round !important;
+      background: var(--zennia-popup-control) !important;
+    }
+    & .zen-folder-tabs-list-search-icon {
+      width: 14px !important;
+      height: 14px !important;
+      margin: 0 !important;
+      fill: var(--zennia-menu-shortcut) !important;
+      opacity: 1 !important;
+    }
+    & #zen-folder-tabs-list-search {
+      appearance: none !important;
+      min-width: 0 !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      color: var(--zennia-text) !important;
+      font: 13px var(--zennia-font) !important;
+      &::placeholder {
+        color: var(--zennia-menu-shortcut) !important;
+        opacity: 1 !important;
+      }
+    }
+    & #zen-folder-tabs-list {
+      max-height: 240px !important;
+      padding: 0 6px 6px !important;
+      scrollbar-width: thin;
+      scrollbar-color: light-dark(#2b203640, #ffffff40) transparent;
+    }
+    & .folders-tabs-list-item {
+      border-radius: var(--zennia-menu-item-radius) !important;
+      corner-shape: round !important;
+    }
+    & .folders-tabs-list-item-content {
+      height: 38px !important;
+      margin: 0 !important;
+      padding: 0 10px !important;
+      border-radius: var(--zennia-menu-item-radius) !important;
+      corner-shape: round !important;
+    }
+    & .folders-tabs-list-item[selected] .folders-tabs-list-item-content {
+      background-color: var(--zennia-popup-hover) !important;
+    }
+    & .folders-tabs-list-item:active .folders-tabs-list-item-content {
+      background-color: var(--zennia-popup-active) !important;
+    }
+    & .folders-tabs-list-item-icon {
+      width: 16px !important;
+      height: 16px !important;
+      margin: 0 10px 0 0 !important;
+      fill: var(--zennia-text) !important;
+    }
+    & .folders-tabs-list-item-labels {
+      gap: 1px;
+      color: var(--zennia-text) !important;
+    }
+    & :is(.folders-tabs-list-item-label, .tab-list-item-secondary-label) {
+      width: auto !important;
+    }
+    & .folders-tabs-list-item-label {
+      color: var(--zennia-text) !important;
+      font: 13px var(--zennia-font) !important;
+    }
+    & .tab-list-item-secondary-label {
+      color: var(--zennia-menu-shortcut) !important;
+      font: 11px var(--zennia-font) !important;
+      opacity: 1 !important;
+    }
+    & #zen-folder-tabs-search-no-results {
+      color: var(--zennia-menu-shortcut) !important;
+      font: 13px var(--zennia-font) !important;
+      padding: 18px 0 !important;
+    }
+  }
+
+  @keyframes zennia-folder-popup-in {
+    from { opacity: 0; transform: scale(0.97); }
+  }
+  @keyframes zennia-folder-popup-fade {
+    from { opacity: 0; }
+  }
+
   /* More menu (application menu) */
   /* The panel element itself carries the card: Windows takes the popup's
      shape from it, so rounding an inner box leaves square window corners. */

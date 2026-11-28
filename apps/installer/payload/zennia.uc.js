@@ -88,6 +88,7 @@
   install("features/menus/create-menu", "ZenniaMenus");
   install("features/tabs/hover-sync", "ZenniaTabHoverSync");
   install("features/sidebar/width", "ZenniaSidebarWidth", { Services });
+  install("features/sidebar/scrollbar-lane", "ZenniaSidebarScrollbarLane");
   const address = install(
     "features/address-bar/address-label",
     "ZenniaAddressLabel",

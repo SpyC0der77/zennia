@@ -3,22 +3,40 @@
   @media (-moz-platform: windows) {
     :root[data-zennia] #navigator-toolbox[zen-sidebar-expanded="true"] {
       --zennia-sidebar-scrollbar-gutter: 16px;
-      --zennia-sidebar-end-padding: calc(var(--zen-toolbox-padding) + var(--zennia-sidebar-scrollbar-gutter));
+      /* Only the tab list reserves the scrollbar lane. The address bar, toolbar
+         and footer keep the normal end padding. */
+      --zennia-sidebar-end-padding: var(--zen-toolbox-padding);
       padding-inline-end: var(--zennia-sidebar-end-padding) !important;
 
       /* Keep the scrollbox at the outer edge while the sidebar controls move in. */
       & :is(#zen-tabs-wrapper, zen-workspace) {
-        width: calc(100% + var(--zen-toolbox-padding) * 2 + var(--zennia-sidebar-scrollbar-gutter)) !important;
+        width: calc(100% + var(--zen-toolbox-padding) * 2) !important;
       }
       & #tabbrowser-tabs {
         overflow-clip-margin: var(--zennia-sidebar-end-padding) !important;
       }
       & .zen-current-workspace-indicator {
-        width: calc(100% - var(--zennia-sidebar-scrollbar-gutter)) !important;
+        width: 100% !important;
         min-width: 0 !important;
       }
+      /* Tab rows take the full width. While the scrollbar is shown, rows beside
+         its thumb make room and ease back as it moves on (scrollbar-lane.js). */
       & .workspace-arrowscrollbox > .zen-workspace-tabs-section {
-        padding-inline-end: var(--zennia-sidebar-end-padding) !important;
+        padding-inline-end: var(--zen-toolbox-padding) !important;
+      }
+      /* Tabs already transition their own margins, so the inner stack moves. On
+         the pinned/unpinned divider only its Clear button moves; the divider
+         keeps Zen's own transitions. */
+      & .workspace-arrowscrollbox :is(.tabbrowser-tab > .tab-stack, .tab-group-label-container, #tabbrowser-arrowscrollbox-periphery, .pinned-tabs-container-separator > .zen-workspace-close-unpinned-tabs-button) {
+        transition: margin-inline-end 0.18s ease-out;
+      }
+      & .workspace-arrowscrollbox :is(.tabbrowser-tab[zennia-scrollbar-clear] > .tab-stack, .tab-group-label-container[zennia-scrollbar-clear], #tabbrowser-arrowscrollbox-periphery[zennia-scrollbar-clear], .pinned-tabs-container-separator[zennia-scrollbar-clear] > .zen-workspace-close-unpinned-tabs-button) {
+        margin-inline-end: var(--zennia-sidebar-scrollbar-gutter) !important;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        & .workspace-arrowscrollbox :is(.tabbrowser-tab > .tab-stack, .tab-group-label-container, #tabbrowser-arrowscrollbox-periphery, .pinned-tabs-container-separator > .zen-workspace-close-unpinned-tabs-button) {
+          transition: none;
+        }
       }
 
       /* Use one full-width footer divider at every scroll position. */
@@ -33,6 +51,15 @@
       & .workspace-arrowscrollbox[overflowing]::after {
         opacity: 0 !important;
       }
+    }
+  }
+  /* Zen paints the resize rail with its beige accent-button color. Tint it
+     with the sidebar's own text color instead so it sits in the sidebar's
+     palette in light and dark themes, and firm it up while dragging. */
+  :root[data-zennia] #zen-sidebar-splitter {
+    background: color-mix(in srgb, currentColor 22%, transparent) !important;
+    &[zen-resizing="true"] {
+      background: color-mix(in srgb, currentColor 38%, transparent) !important;
     }
   }
   :root[data-zennia] .browserSidebarContainer:not(.zen-glance-overlay) {
